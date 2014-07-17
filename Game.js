@@ -1,19 +1,36 @@
 //thing = createjs.Sprite()
 //thing.x = 200
 
+
+var stage = null;
+
 function init() {
-    var stage = new createjs.Stage("demoCanvas");
+    stage = new createjs.Stage("largeCanvas");
+    stage.mouseMoveOutside = true;
     var circle = new createjs.Shape();
     circle.graphics.beginFill("red").drawCircle(0, 0, 50);
-    circle.x = 100;
-    circle.y = 100;
-    stage.addChild(circle);
-    stage.update();
     // stage.addChild(new createjs.Shape()).setTransform(100,100).graphics.f("red").dc(0,0,50);
+
+    var text = new createjs.Text("Circle", "25px Marker Felt", "white");
+    text.textAlign = "center";
+    text.y = -10;
+
+    var drag = new createjs.Container();
+    drag.x = 100;
+    drag.y = 100;
+    drag.addChild(circle, text);
+    stage.addChild(drag);
+
+    drag.on("pressmove", function(event) {
+        event.currentTarget.x = event.stageX;
+        event.currentTarget.y = event.stageY;
+        stage.update();
+    });
+
+    stage.update();
 }
 
 function StarShape() {
-    var stage = new createjs.Stage("starCanvas");
     var star = new createjs.Shape();
     star.graphics.beginFill("blue").drawPolyStar(0, 0, 50, 7, 0.5, -90);
     star.x = 100;
@@ -23,7 +40,6 @@ function StarShape() {
 }
 
 function buttonClick() {
-    var stage = new createjs.Stage("buttonCanvas");
     var btton = new createjs.Shape();
     btton.graphics.beginFill("blue").drawRoundRect(0, 0, 200, 100, 15);
     btton.x = 100;
@@ -33,7 +49,6 @@ function buttonClick() {
 
     btton.addEventListener("click", RandomText);
     function RandomText(event) {
-        var stage = new createjs.Stage("textCanvas");
         var text1 = new createjs.Text("Hello", "45px Comic Sans MS", "pink");
         var text2 = new createjs.Text("world", "45px Marker Felt", "blue");
         var text3 = new createjs.Text("!!!!!", "45px Monotype Corsiva", "red");
@@ -49,3 +64,11 @@ function buttonClick() {
         stage.update();
     }
 }
+
+function pic() {
+    var image = new createjs.Bitmap("http://www.writerscentre.com.au/wp-content/uploads/2013/12/Writing-Picture-Books-grid.jpg");
+    stage.addChild(image);
+    stage.update();
+}
+
+init();
