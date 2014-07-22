@@ -1,7 +1,6 @@
-var stage = null;
 
 function init() {
-    stage = new createjs.Stage("largeCanvas");
+    var stage = new createjs.Stage("largeCanvas");
     stage.mouseMoveOutside = true;
     var circle;
     var drag = new createjs.Container();
@@ -25,6 +24,16 @@ function init() {
             event.currentTarget.x = event.stageX;
             event.currentTarget.y = event.stageY;
             stage.update();
+        });
+        
+        circle.on("rollover", function(event) {
+        	circle.alpha = 1;
+        	stage.update();
+        });
+        
+        circle.on("rollout", function(event) {
+        	circle.alpha = .5;
+        	stage.update()
         });
 
         circle.name = "circle_" + i;
