@@ -17,5 +17,17 @@ function practice() {
     console.log(Math.PI);
 }
 
-//stage = new createjs.Stage("BarCanvas");
+function drawBar(height) {
+	var rect = new createjs.Shape()
+	if(height>=200) {
+		var color = "yellow";
+	}else if(height>100 && height<200) {
+		var color = "red";
+	}else {
+		var color = "green";
+	}
+	rect.graphics.beginFill(color).drawRect(0, 0, 25);
+}
+
+stage = new createjs.Stage("BarCanvas");
 practice();
