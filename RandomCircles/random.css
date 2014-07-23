@@ -1,0 +1,33 @@
+body{
+    background-color: lightcyan;
+}
+
+#half{
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 50%;
+    height: 100%;
+    background-color: lightpink;
+    z-index: -1;
+}
+
+canvas{
+    background-color: lightcoral;
+    background-position: center;
+    margin: auto;
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    border: 5px solid black;
+}
+
+h1{
+    text-align: center;
+    text-shadow: 2px 3px white;
+    background-color: blue;
+    display: inline-block;
+}
+

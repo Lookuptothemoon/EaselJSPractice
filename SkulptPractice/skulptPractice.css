@@ -1,0 +1,40 @@
+body{
+    background-color: lightpink;
+    text-align: center;
+}
+
+#half1{
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 25%;
+    height: 100%;
+    background-color: lightcyan;
+    z-index: -1;
+}
+
+#half2{
+    position: fixed;
+    top: 0;
+    left: 75%;
+    width: 25%;
+    height: 100%;
+    background-color: lightcyan;
+    z-index: -1;
+}
+
+#Code{
+    align-self: center;
+    background-color: black;
+    color: white;
+}
+
+#turtleCanvas{
+    border: 2px solid black;
+}
+
+#consoleLog{
+    border: 1px solid black;
+    display: inline-block;
+    height: 50px;
+}
