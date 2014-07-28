@@ -3,50 +3,18 @@
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js" type="text/javascript"></script>
     <script src="../skulpt.min.js" type="text/javascript"></script>
     <script src="../skulpt-stdlib.js" type="text/javascript"></script>
+    <script src="../ace-builds/src-noconflict/ace.js" type="text/javascript" charset="utf-8"></script>
     <link rel="stylesheet" type="text/css" href="skulptPractice.css">
+    <script src="skulptPractice.js" type="text/javascript"></script>
 </head> 
  
 <body>
 <div id="half1"></div>
 <div id="half2"></div>
- 
-<script type="text/javascript"> 
-    // output functions are configurable.  This one just appends some text
-    // to a pre element.
-    function outf(text) {
-        var mypre = document.getElementById("consoleLog");
-        mypre.innerHTML = mypre.innerHTML + text;
-    }
-    function builtinRead(x) {
-        if (Sk.builtinFiles === undefined || Sk.builtinFiles["files"][x] === undefined)
-                throw "File not found: '" + x + "'";
-        return Sk.builtinFiles["files"][x];
-    }
 
-    // Here's everything you need to run a python program in skulpt
-    // grab the code from your textarea
-    // get a reference to your pre element for output
-    // configure the output function
-    // call Sk.importMainWithBody()
-    function runit() {
-       var prog = document.getElementById("Code").value;
-       var mypre = document.getElementById("consoleLog");
-       mypre.innerHTML = '';
-       Sk.canvas = "turtleCanvas";
-       Sk.pre = "consoleLog";
-       Sk.configure({output:outf, read:builtinRead});
-       try {
-          eval(Sk.importMainWithBody("<stdin>",false,prog));
-       }
-       catch(e) {
-           alert(e.toString())
-       }
-    }
-</script> 
- 
-<br><br><h2>Enter Code Below</h2>
-<form> 
-<textarea id="Code" cols="40" rows="10">import turtle
+<br><h2>Enter Code Below</h2>
+
+<div id="editor">
 import turtle
 def drawBar(t, height):
     t.hideturtle()
@@ -104,14 +72,53 @@ for a in data:
     #num = num + 1
 print '''This is a program indicated to show how the BarGraph is supposed to look like aside from the axis/scale.'''
 wn.exitonclick()
-</textarea><br />
-<button type="button" onclick="runit()">Run</button> 
-</form> 
+</div>
+
+<button type="button" onclick="runit()">Run</button>
 
 <!-- If you want turtle graphics include a canvas -->
 <canvas id="turtleCanvas" ></canvas><br>
 
 <pre id="consoleLog" ></pre>
+
+<script type="text/javascript">
+    var editor = ace.edit("editor");
+    editor.setTheme("ace/theme/merbivore");
+    editor.getSession().setMode("ace/mode/python");
+
+
+    // output functions are configurable.  This one just appends some text
+    // to a pre element.
+    function outf(text) {
+        var mypre = document.getElementById("consoleLog");
+        mypre.innerHTML = mypre.innerHTML + text;
+    }
+    function builtinRead(x) {
+        if (Sk.builtinFiles === undefined || Sk.builtinFiles["files"][x] === undefined)
+                throw "File not found: '" + x + "'";
+        return Sk.builtinFiles["files"][x];
+    }
+
+    // Here's everything you need to run a python program in skulpt
+    // grab the code from your textarea
+    // get a reference to your pre element for output
+    // configure the output function
+    // call Sk.importMainWithBody()
+    function runit() {
+       var prog = code = editor.getSession().getValue();
+       var mypre = document.getElementById("consoleLog");
+       mypre.innerHTML = '';
+       Sk.canvas = "turtleCanvas";
+       Sk.pre = "consoleLog";
+       Sk.configure({output:outf, read:builtinRead});
+       try {
+          eval(Sk.importMainWithBody("<stdin>",false,prog));
+       }
+       catch(e) {
+           alert(e.toString())
+       }
+    }
+</script>
 
 </body> 
  

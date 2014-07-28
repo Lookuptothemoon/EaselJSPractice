@@ -7,7 +7,7 @@ body{
     position: fixed;
     top: 0;
     left: 0;
-    width: 25%;
+    width: 10%;
     height: 100%;
     background-color: lightcyan;
     z-index: -1;
@@ -16,25 +16,61 @@ body{
 #half2{
     position: fixed;
     top: 0;
-    left: 75%;
-    width: 25%;
+    left: 90%;
+    width: 10%;
     height: 100%;
     background-color: lightcyan;
     z-index: -1;
 }
 
-#Code{
-    align-self: center;
-    background-color: black;
-    color: white;
+#editor {
+    border-radius: 10px;
+    text-align: left;
+    position: absolute;
+    top: 0;
+    right: 40%;
+    bottom: 25%;
+    left: 0;
+    width: 40%;
+    height: 50%;
+    margin: auto;
 }
 
 #turtleCanvas{
-    border: 2px solid black;
+    border-radius: 10px;
+    background-color: rgba(255,255,255,.50);
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 33%;
+    left: 40%;
+    width: 40%;
+    height: 42%;
+    margin: auto;
 }
 
 #consoleLog{
-    border: 1px solid black;
-    display: inline-block;
-    height: 50px;
+    display: block;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    background-color: white;
+    font-size: 15px;
+    line-height: 1.42857143;
+    word-break: break-all;
+    word-wrap: break-word;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: -18%;
+    left: 40%;
+    width: 40%;
+    height: 5%;
+    margin: auto;
+}
+
+button{
+    position: relative;
+    bottom: 15px;
 }
