@@ -20,7 +20,7 @@ function init() {
         circle.x = largeCanvas.width * Math.random()|0;
 		circle.y = largeCanvas.height * Math.random()|0;
         circle.alpha = .5;
-        
+
         circle.on("mouseover", function(event) {
         	event.currentTarget.alpha = 1;
             stage.update();
@@ -45,4 +45,3 @@ function init() {
 }
 
 init();
-

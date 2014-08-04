@@ -1,53 +1,47 @@
 var stage;
-var tween;
+//var tween;
+var text;
 
 function init() {
     stage = new createjs.Stage("ballCanvas");
     stage.mouseMoveOutside = true;
     stage.enableMouseOver();
 
-    var basketball = new createjs.Bitmap("http://icons.iconseeker.com/png/fullsize/snowe-2-xp/games-basketball-1.png");
+    var basketball = new createjs.Bitmap("images/basketball.png");
+    var hoop = new createjs.Bitmap("images/hoop.png");
+    hoop.x = 180;   //-65
+    hoop.y = -10;
+    hoop.alpha = 0.5;
 
-    if('ontouchstart' in document.documentElement) {
-        stage.addEventListener('touchstart', function(event) {
-            handleKeyDown();
-        }, false);
+    ballCanvas.addEventListener("click", function handleClick(){
+        createjs.Tween.get(basketball).to({x:884}, 2500, createjs.Ease.quadOut);
+        createjs.Tween.get(basketball).to({y:397}, 2000, createjs.Ease.bounceOut);
+    });
 
-        stage.addEventListener('touchend', function(event){
-            handleKeyUp();
-        }, false);
-    } else {
-        document.onkeydown = handleKeyDown;
-        document.onkeyup = handleKeyUp;
-        document.onmousedown = handleKeyDown;
-        document.onmouseup = handleKeyUp;
-    }
+
+    hoop.addEventListener("mouseover", function handleInteraction(event){
+        event.currentTarget.alpha = 1;
+    });
+    hoop.addEventListener("mouseout", function other(event){
+        event.currentTarget.alpha = 0.5;
+    });
+
+    basketball.addEventListener("tick", function hit(event){
+        var pt = basketball.localToLocal(0,0,hoop);
+        if(hoop.hitTest(pt.x,pt.y)){
+            hoop.x = Math.floor((Math.random() * 723) - 82);
+            hoop.y = Math.floor((Math.random() * 256 - 38));
+            text = new createjs.Text("YOU WIN!", "50px Arial", "orange");
+            text.x = 430;
+            text.y = 250;
+            stage.addChild(text);
+        }
+    });
+
     stage.addChild(basketball);
-
-    function handleKeyUp(event) {
-        /*tween = createjs.Tween.get(basketball, {loop:true})
-            .to({x:basketball.x, y:ballCanvas.height - 55, rotation:-360}, 1500, createjs.Ease.bounceOut)
-            .wait(1000)
-            .to({x:ballCanvas.width-55, rotation:360}, 2500, createjs.Ease.bounceOut)
-            .wait(1000).call(handleComplete)
-            .to({scaleX:2, scaleY:2, x:ballCanvas.width - 110, y:ballCanvas.height-110}, 2500, createjs.Ease.bounceOut)
-            .wait(1000)
-            .to({scaleX:.5, scaleY:.5, x:30, rotation:-360, y:ballCanvas.height-30}, 2500, createjs.Ease.bounceOut);
-            */
-    }
-
-    function handleKeyDown(event) {
-        createjs.Tween.get(basketball).to({x:385}, 2500, createjs.Ease.quadOut);
-        createjs.Tween.get(basketball).to({y:197}, 2000, createjs.Ease.bounceOut);
-    }
-
+    stage.addChild(hoop);
 
     createjs.Ticker.addEventListener("tick", tick);
-
-}
-
-function handleComplete(tween) {
-    var basketball = tween._target;
 }
 
 function tick(event) {
