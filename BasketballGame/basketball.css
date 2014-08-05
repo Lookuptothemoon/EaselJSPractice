@@ -1,6 +1,20 @@
+body{
+    background-color: #d2d2d2;
+}
+
 #ballCanvas{
-    background-image: url("images/background.png");
+    background-color: #cce8ff;
+    background-image: url("images/BasketballStadium.png");
     background-repeat: no-repeat;
-    background-position: center;
-    background-color: skyblue;
+    background-position: 42% -12%;
+    background-size: 1070px 1000px;
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    margin: auto;
+    border: 5px solid gray;
+    border-radius: 7px;
+
 }
