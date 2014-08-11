@@ -3,21 +3,6 @@ var text;
 var sprite;
 var num;
 
-/*
-var box2d = {
-    b2Vec2 : Box2D.Common.Math.b2Vec2,
-    b2BodyDef : Box2D.Dynamics.b2BodyDef,
-    b2Body : Box2D.Dynamics.b2Body,
-    b2FixtureDef : Box2D.Dynamics.b2FixtureDef,
-    b2Fixture : Box2D.Dynamics.b2Fixture,
-    b2World : Box2D.Dynamics.b2World,
-    b2MassData : Box2D.Collision.Shapes.b2MassData,
-    b2PolygonShape : Box2D.Collision.Shapes.b2PolygonShape,
-    b2CircleShape : Box2D.Collision.Shapes.b2CircleShape,
-    b2DebugDraw : Box2D.Dynamics.b2DebugDraw;
-};
-*/
-
 function init() {
     stage = new createjs.Stage("ballCanvas");
     stage.mouseMoveOutside = true;
@@ -30,11 +15,30 @@ function init() {
     basketball.y = -87;         //  -87 & 570
     basketball.alpha = 0.5;
 
-    var hoop = new createjs.Bitmap("images/Hoop.png");
-    hoop.x = 322;
-    hoop.y = -50;
+    var backboard = new createjs.Bitmap("images/backboard.png");
+    backboard.x = 322;
+    backboard.y = -50;
+    backboard.scaleY = 1.30;
+    backboard.scaleX = 1.05;
+
+    var hoop = new createjs.Bitmap("images/hoop.png");
+    hoop.x = 258;
+    hoop.y = -110;
     hoop.scaleY = 1.30;
     hoop.scaleX = 1.05;
+
+    //creates a hit test shape for the basket
+    var hits = new createjs.Shape();
+    hits.graphics.beginFill("black").drawRect(0, 0, 40, 10);
+    hits.alpha = 0.5;
+    hits.x = 190; //700
+    hits.y = 100; //300
+
+    var ell = new createjs.Shape();
+    ell.graphics.beginFill("blue").drawEllipse(0, 0 , 60, 10);
+    ell.x = 730; //730
+    ell.y = 320; //320
+    hoop.hitArea = ell;
 
     var data = new createjs.SpriteSheet({
      images: [ "images/crawl.png" ],
@@ -47,7 +51,6 @@ function init() {
     sprite = new createjs.Sprite(data, "stand");
     sprite.x = 100;
     sprite.y = 400;
-
 
     num = 1;
     sprite.addEventListener("click", function go(){
@@ -65,26 +68,17 @@ function init() {
         createjs.Tween.get(basketball).to({y:570}, 2000, createjs.Ease.bounceOut);
     });
 
-
-    basketball.addEventListener("mouseover", function handleInteraction(event){
+    basketball.addEventListener("mouseover", function handleInteraction(){
         basketball.alpha = 1;
     });
-    /*
-    basketball.addEventListener("mouseout", function other(event){
-        basketball.alpha = 0.5;
-    });
-    */
 
     hoop.addEventListener("click", function glow(){
         hoop.alpha = .5;
     });
 
-
-    basketball.addEventListener("tick", function hit(event){
-        var pt = basketball.localToLocal(0,0,hoop);
-        if(hoop.hitTest(pt.x,pt.y)){
-            basketball.x = Math.floor((Math.random() * 833) - 122);
-            basketball.y = Math.floor((Math.random() * 570 - 87));
+    basketball.addEventListener("tick", function madeContact(){
+        var pt = basketball.globalToLocal(0,0,hits);
+        if(hits.hitTest(pt.x,pt.y)){
             text = new createjs.Text("YOU WIN!", "50px Arial", "orange");
             text.x = 430;
             text.y = 250;
@@ -92,13 +86,13 @@ function init() {
         }
     });
 
-    stage.addChild(hoop, basketball);
+    stage.addChild(backboard, basketball, hits, hoop);
     stage.addChild(sprite);
 
     createjs.Ticker.addEventListener("tick", tick);
 }
 
-function tick(event) {
+function tick() {
     stage.update();
 }
 
