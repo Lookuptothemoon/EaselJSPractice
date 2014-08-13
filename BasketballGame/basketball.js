@@ -45,7 +45,7 @@ function init() {
     //creates a test hit test shape for the basket
     var hits = new createjs.Shape();
     hits.graphics.beginFill("black").drawRect(0, 0, 20, 5);
-    hits.alpha = 0.5;
+    hits.alpha = 0;
     hits.x = 750; //700
     hits.y = 326; //300
 
