@@ -3,9 +3,8 @@ function init() {
     var stage = new createjs.Stage("largeCanvas");
     stage.mouseMoveOutside = true;
     stage.enableMouseOver();
+
     var circle;
-    var drag = new createjs.Container();
-    stage.addChild(drag);
 
     var listClr = ["red", "orange", "yellow", "green", "blue", "purple", "silver", "lime", "aqua"];
     var num = 0;
@@ -31,17 +30,21 @@ function init() {
             stage.update();
         });
 
-        circle.on("pressmove", function(event) {
-            event.currentTarget.x = event.stageX;
-            event.currentTarget.y = event.stageY;
-            stage.update();
-        });
+        draggable(circle);
 
         circle.name = "circle_" + i;
-        drag.addChild(circle);
+        stage.addChild(circle);
     }
 
     stage.update();
+}
+
+function draggable(item) {
+    item.on("pressmove", function(event) {
+        event.currentTarget.x = event.stageX;
+        event.currentTarget.y = event.stageY;
+        stage.update();
+    });
 }
 
 init();

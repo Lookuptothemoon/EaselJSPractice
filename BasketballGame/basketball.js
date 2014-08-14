@@ -136,6 +136,13 @@ function init() {
     createjs.Ticker.addEventListener("tick", tick);
 }
 
+function draggable(item) {
+    item.on("pressmove", function(event) {
+        event.currentTarget.x = event.stageX;
+        event.currentTarget.y = event.stageY;
+        stage.update();
+    });
+}
 
 function tick() {
     //updates the stage automatically

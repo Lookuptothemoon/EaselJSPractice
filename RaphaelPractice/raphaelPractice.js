@@ -23,6 +23,6 @@ window.onload = function () {
     }
 
     c.drag(move, start, end);
-    ball.drag(move,start,end2);
+    ball.drag(move,start,end);
 
 };
