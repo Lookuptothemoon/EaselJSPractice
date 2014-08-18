@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>EaselJS demo: Mouse Events on Stage</title>
+    <script src="createjs-2013.12.12.min.js"></script>
+
+    <script>
+        var canvas, stage;
+        var drawingCanvas;
+        var oldPt;
+        var oldMidPt;
+        var title;
+        var color;
+        var stroke;
+        var colors;
+        var index;
+        var redCirc, orgCirc, yllwCirc, grnCirc, blueCirc, indCirc, prpCirc;
+
+        function init() {
+            if (window.top != window) {
+                document.getElementById("header").style.display = "none";
+            }
+            canvas = document.getElementById("myCanvas");
+
+            //check to see if we are running in a browser with touch support
+            stage = new createjs.Stage(canvas);
+            stage.autoClear = false;
+            stage.enableDOMEvents(true);
+
+            createjs.Touch.enable(stage);
+            createjs.Ticker.setFPS(24);
+
+            drawingCanvas = new createjs.Shape();
+
+            stage.addEventListener("stagemousedown", handleMouseDown);
+            stage.addEventListener("stagemouseup", handleMouseUp);
+
+            title = new createjs.Text("Click and Drag to draw", "36px Arial", "#777777");
+            title.x = 300;
+            title.y = 200;
+            stage.addChild(title);
+
+            redCirc =  new createjs.Shape();
+            redCirc.graphics.beginFill("red").drawCircle(100, 100, 25);
+            stage.addChild(redCirc);
+
+            stage.addChild(drawingCanvas);
+            stage.update();
+        }
+
+        function stop() {
+        }
+
+        function handleMouseDown () {
+            if (stage.contains(title)) {
+                stage.clear();
+                stage.removeChild(title);
+            }
+
+            redCirc.addEventListener("click")
+
+            color = goRed();
+
+            stroke = 1;
+            oldPt = new createjs.Point(stage.mouseX, stage.mouseY);
+            oldMidPt = oldPt;
+
+            stage.addEventListener("stagemousemove", handleMouseMove);
+        }
+
+        function handleMouseMove(event) {
+            var midPt = new createjs.Point(oldPt.x + stage.mouseX >> 1, oldPt.y + stage.mouseY >> 1);
+
+            drawingCanvas.graphics.clear().setStrokeStyle(stroke, 'round', 'round').beginStroke(color).moveTo(midPt.x, midPt.y).curveTo(oldPt.x, oldPt.y, oldMidPt.x, oldMidPt.y);
+
+            oldPt.x = stage.mouseX;
+            oldPt.y = stage.mouseY;
+
+            oldMidPt.x = midPt.x;
+            oldMidPt.y = midPt.y;
+
+            stage.update();
+        }
+
+        function handleMouseUp(event) {
+            stage.removeEventListener("stagemousemove", handleMouseMove);
+        }
+
+    </script>
+</head>
+<body onload="init();">
+
+<canvas id="myCanvas" width="960" height="400"></canvas>
+</body>
+</html>

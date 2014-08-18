@@ -3,6 +3,7 @@ var text;
 var sprite;
 var num;
 var stickman;
+var stick;
 
 function init() {
     //sets the stage as the ballCanvas
@@ -83,6 +84,20 @@ function init() {
     sprite.x = 100;
     sprite.y = 400;
 
+    var info = new createjs.SpriteSheet({
+         images: [ "images/stick.png" ],
+         frames: { width: 66.66666666666667, height: 125.875 },
+         animations: {
+              "default": { frames: [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71 ], frequency: 30 },
+              "up": {frames: [42], frequency: 0},
+              "run": {frames: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30/*, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69*/], next:false, speed:5}
+         }
+    });
+
+    stick = new createjs.Sprite(info, "up");
+    stick.x = 300;
+    stick.y = 500;
+
     hoop.hitArea = ell;
     //makes hoop opacity .50% when clicked on
     hoop.addEventListener("click", function glow(){
@@ -128,10 +143,19 @@ function init() {
         num = num + 1;
     });
 
+    ballCanvas.addEventListener("click", function run(){
+        var num = 0;
+        while (num<25) {
+            stick.gotoAndPlay("run");
+            stick.x = stick.x + 20;
+        }
+        num = num + 1;
+    });
+
 
     //adds the objects made above to the stage
     stage.addChild(backboard, basketball, hoop, hits/*, ell*/);
-    stage.addChild(sprite/*, stickman*/);
+    stage.addChild(sprite, stick/*, stickman*/);
 
     createjs.Ticker.addEventListener("tick", tick);
 }
@@ -151,3 +175,79 @@ function tick() {
 
 //calls the function
 init();
+
+
+
+
+
+
+
+        var canvas, stage;
+        var drawingCanvas;
+        var oldPt;
+        var oldMidPt;
+        var title;
+        var color;
+        var stroke;
+        var colors;
+        var index;
+
+        function init() {
+            if (window.top != window) {
+                document.getElementById("header").style.display = "none";
+            }
+            canvas = document.getElementById("myCanvas");
+            index = 0;
+            colors = ["#828b20", "#b0ac31", "#cbc53d", "#fad779", "#f9e4ad", "#faf2db", "#563512", "#9b4a0b", "#d36600", "#fe8a00", "#f9a71f"];
+
+            //check to see if we are running in a browser with touch support
+            stage = new createjs.Stage(canvas);
+            stage.autoClear = false;
+            stage.enableDOMEvents(true);
+
+            createjs.Touch.enable(stage);
+            createjs.Ticker.setFPS(24);
+
+            drawingCanvas = new createjs.Shape();
+
+            stage.addEventListener("stagemousedown", handleMouseDown);
+            stage.addEventListener("stagemouseup", handleMouseUp);
+
+            title = new createjs.Text("Click and Drag to draw", "36px Arial", "#777777");
+            title.x = 300;
+            title.y = 200;
+            stage.addChild(title);
+
+            stage.addChild(drawingCanvas);
+            stage.update();
+        }
+
+        function stop() {}
+
+        function handleMouseDown(event) {
+            if (stage.contains(title)) { stage.clear(); stage.removeChild(title); }
+            color = colors[(index++)%colors.length];
+            stroke = Math.random()*30 + 10 | 0;
+            oldPt = new createjs.Point(stage.mouseX, stage.mouseY);
+            oldMidPt = oldPt;
+            stage.addEventListener("stagemousemove" , handleMouseMove);
+        }
+
+        function handleMouseMove(event) {
+            var midPt = new createjs.Point(oldPt.x + stage.mouseX>>1, oldPt.y+stage.mouseY>>1);
+
+            drawingCanvas.graphics.clear().setStrokeStyle(stroke, 'round', 'round').beginStroke(color).moveTo(midPt.x, midPt.y).curveTo(oldPt.x, oldPt.y, oldMidPt.x, oldMidPt.y);
+
+            oldPt.x = stage.mouseX;
+            oldPt.y = stage.mouseY;
+
+            oldMidPt.x = midPt.x;
+            oldMidPt.y = midPt.y;
+
+            stage.update();
+        }
+
+        function handleMouseUp(event) {
+            stage.removeEventListener("stagemousemove" , handleMouseMove);
+        }
+
