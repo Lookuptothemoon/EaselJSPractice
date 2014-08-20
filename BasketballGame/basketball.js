@@ -148,8 +148,8 @@ function init() {
         while (num<25) {
             stick.gotoAndPlay("run");
             stick.x = stick.x + 20;
+            num = num + 1;
         }
-        num = num + 1;
     });
 
 
