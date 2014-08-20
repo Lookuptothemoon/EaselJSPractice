@@ -19,15 +19,14 @@ img.onload = function () {
     // transitioning to a new image on the right
     var tempCanvas = document.createElement("canvas");
     var tempCtx = tempCanvas.getContext("2d");
-    tempCanvas.width = img.width * 2 - 15;
+    tempCanvas.width = img.width - 15;
     tempCanvas.height = img.height;
     tempCtx.drawImage(img, 0, 0);
     tempCtx.save();
-    tempCtx.translate(tempCanvas.width, 0);
     tempCtx.scale(-1, 1);
     tempCtx.drawImage(img, 0, 0);
     tempCtx.restore();
-    infiniteImageWidth = img.width * 2;
+    infiniteImageWidth = img.width;
     infiniteImage = document.createElement("img");
     infiniteImage.onload = function () {
         pan();
@@ -38,7 +37,7 @@ img.crossOrigin = "anonymous";
 img.src = "images/CityBackground.png";
 
 
-var fps = 60;
+var fps = 500;
 var offsetLeft = 0;
 
 function pan() {

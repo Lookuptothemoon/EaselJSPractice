@@ -179,7 +179,7 @@ init();
 
 
 
-
+/*
 
 
         var canvas, stage;
@@ -251,3 +251,4 @@ init();
             stage.removeEventListener("stagemousemove" , handleMouseMove);
         }
 
+*/
