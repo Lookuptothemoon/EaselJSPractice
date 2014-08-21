@@ -7,19 +7,6 @@ window.requestAnimFrame = (function (callback) {
 /*
 var canvas = document.getElementById("canvas");
 var ctx = canvas.getContext("2d");
-
-var width = 1000,
-    height = 700,
-    player = {
-      x : width/2,
-      y : height - 5,
-      width : 5,
-      height : 5,
-      speed: 3,                 //controls the height and speed the player jumps
-      velX: 0,
-      velY: 0,
-      jumping: false
-    },
     keys = [],
     friction = 0.8,
     gravity = 0.3;
@@ -95,18 +82,43 @@ window.addEventListener("load",function(){
 
 
 
+
+
+//Key codes for keyboard input
+var enter_key = 13;
+var space_key = 32;
+var up_key = 38;
+var left_key = 37;
+var right_key = 39;
+//letters
+var w_key = 87;
+var a_key = 65;
+var d_key = 68;
+
+//document.onkeydown = handleKeydown;
+//document.onkeyup = handleKeyUp;
+
+
 var stage;
 
 function init() {
     //sets the stage as the ballCanvas
-    stage = new createjs.Stage("canvas");
+    stage = new createjs.Stage(document.getElementById("canvas"));
     stage.mouseMoveOutside = true;
     stage.enableMouseOver(10);
 
-    //makes a basketball bitmap
+    //makes the container move horizontally giving it a scroll effect
+    var scrollImg = new createjs.Container();
     var bckgrd1 = new createjs.Bitmap("images/CityBackground.png");
     bckgrd1.x = 0;
     bckgrd1.y = -10;
+    bckgrd1.scaleX = 1.15;
+
+    var bckgrd2 = bckgrd1.clone();
+    bckgrd2.x = bckgrd2.x - 1085;
+
+    scrollImg.addChild(bckgrd2, bckgrd1);
+
 
     var player = new createjs.Bitmap("images/player.png");
     player.x = 0;
@@ -119,23 +131,23 @@ function init() {
     airplane.y = -250;
 
     //adds the objects made above to the stage
-    stage.addChild(bckgrd1);
+    stage.addChild(scrollImg);
     stage.addChild(player);
     stage.addChild(airplane);
 
-    bckgrd1.addEventListener("tick", function move(){
-        bckgrd1.x = bckgrd1.x + 1;
+    scrollImg.addEventListener("tick", function move() {
+        scrollImg.x = scrollImg.x + 5;
         airplane.x = airplane.x - 10;
-        if(player.x < 800) {
+        if (player.x < 800) {
             player.x = player.x + 5;
         }
     });
 
-    canvas.addEventListener("click", function stop(){
-        bckgrd1.removeAllEventListeners();
+    canvas.addEventListener("click", function stop() {
+        scrollImg.removeAllEventListeners();
     });
 
-    player.addEventListener("pressmove", function move(event){
+    player.addEventListener("pressmove", function move(event) {
         player.x = event.stageX;
         player.y = event.stageY;
         console.log(event.stageX);
@@ -143,6 +155,7 @@ function init() {
     });
 
     createjs.Ticker.addEventListener("tick", tick);
+
 }
 
 function tick() {
