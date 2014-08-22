@@ -138,9 +138,9 @@ function init() {
     scrollImg.addEventListener("tick", function move() {
         scrollImg.x = scrollImg.x + 5;
         airplane.x = airplane.x - 10;
-        if (player.x < 800) {
-            player.x = player.x + 5;
-        }
+        //if (player.x < 800) {
+        //    player.x = player.x + 5;
+        //}
     });
 
     canvas.addEventListener("click", function stop() {
@@ -156,11 +156,19 @@ function init() {
 
     createjs.Ticker.addEventListener("tick", tick);
 
+    document.addEventListener("keydown", handleRight);
+
 }
 
 function tick() {
     //updates the stage automatically
     stage.update();
+}
+
+function handleRight(event) {
+    if (event.keyCode == right_key){
+        player.x = player.x + 5;
+    }
 }
 
 //calls the function
